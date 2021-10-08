@@ -15,6 +15,7 @@
     <textarea id="myTextarea">
 
 <p>Seleccione una pregunta</p>
+<div></div>
 <select name="cars" id="cars" onchange="revisa();">
     <option value="-1">seleccione la Pregunta</option>
     <option value="0">Preugnta 1></option>
