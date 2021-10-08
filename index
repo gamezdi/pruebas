@@ -1,0 +1,233 @@
+<html>
+<head>
+</head>
+<style>
+#inici {
+    display: none;
+};
+
+</style>
+<body>
+
+    <input type="file" id="select-input" size="100"/>
+	<div id="content"></div>
+	<img id="picture" src="">
+    <textarea id="myTextarea">
+
+<p>Seleccione una pregunta</p>
+<select name="cars" id="cars" onchange="revisa();">
+    <option value="-1">seleccione la Pregunta</option>
+    <option value="0">Preugnta 1></option>
+    <option value="1">Preugnta 2></option>
+    <option value="2">Preugnta 3></option>
+    <option value="3">Preugnta 4></option>
+    <option value="4">Preugnta 5></option>
+    <option value="5">Preugnta 6></option>
+    <option value="6">Preugnta 7></option>
+    <option value="7">Preugnta 8></option>
+    <option value="8">Preugnta 9></option>
+    <option value="9">Preugnta 10></option>
+    <option value="10">Preugnta 11></option>
+    <option value="11">Preugnta 12></option>
+    <option value="12">Preugnta 13></option>
+    <option value="13">Preugnta 14></option>
+    <option value="14">Preugnta 15></option>
+    <option value="15">Preugnta 16></option>
+    <option value="16">Preugnta 17></option>
+  </select>
+<hr>
+<div id="inici">
+    <span> Total de personas A</span><input id="totalA"/>
+    <hr>
+    <span> Total de personas B</span><input id="totalB"/>
+    <hr>
+    <span> Total de personas C</span><input id="totalC"/>
+    <hr>
+    <span> Total de personas D </span><input id="totalD"/>
+    <hr>
+    <span> Total de personas</span><input id="total"/>    
+</div>
+</body>
+<script>
+
+var rws ="";
+
+document.getElementById("select-input").addEventListener("change", (e) =>{
+			// Obtener el objeto de archivo seleccionado
+			let file = e.target.files[0];
+			// Compruebe la compatibilidad del navegador con FileReader
+			if(window.FileReader) {
+			    // Crear objeto FileReader (objeto de archivo)
+				const reader = new FileReader();
+				reader.onloadstart = function(e) {
+					console.log("Empieza a leer", e);
+				};
+				// Leyendo:
+				reader.onprogress = function(e) {
+					console.log("Leyendo",e);
+				};
+				// Al leer error:
+				reader.onerror = function(e) {
+					console.log("Error de lectura",e);
+				};
+				// Al leer interrumpir:
+				reader.onabort = function(e) {
+					console.log("Lectura interrumpida",e);
+				};
+				// Cuando la lectura es exitosa:
+				reader.onload = function(e) {
+					console.log("Leer correctamente",e);
+					if(/image\/\w+/.test(file.type)){
+					    document.getElementById("picture").src = e.target.result;
+					}else{
+						// archivo de salida
+						document.getElementById("content").innerText = e.target.result;
+                        var prueba =document.getElementById("content");
+                        rws=JSON.parse(prueba.textContent);
+					};
+					
+				};
+				// La lectura está completa, independientemente del éxito o el fracaso:
+				reader.onloadend = function(e) {
+					console.log("La lectura está completa, independientemente del éxito o el fracaso",e);
+
+				};
+
+
+
+				
+				reader.readAsText(file,"utf-8");
+			  	 reader.readAsBinaryString (file); // lee el archivo como código binario
+				 reader.readAsDataURL (file); // lee el archivo como DataURL
+				 reader.readAsText (none); // operación de lectura de terminal * /
+
+				
+				if(/image\/\w+/.test(file.type)){
+					    reader.readAsDataURL(file);
+				}else{
+					// archivo de salida
+					reader.readAsText(file,"utf-8");
+				};
+			}else {
+			    alert("Not supported by your browser!");
+			};
+		}, false);
+
+
+
+
+console.log(rws);
+
+evalua=(id)=>{
+	var auxF=rws.filter(w=>w.idpadre===id.idmenu);
+	if(auxF.length !=0){
+		auxF.forEach(y=>{
+			id.elemento=evalua(y);
+		});
+	}
+	return id;
+};
+let respuestaa=0;
+let respuestab=0;
+let respuestac=0;
+let respuestad=0;
+
+var arrA=[];
+var arrB=[];
+var arrC=[];
+var arrD=[];
+
+continuaBusqueda=()=>{};
+
+iniciar=(op)=>{
+    for (var key in rws) {
+  
+  console.log(key);
+  var resultadoTemp=JSON.parse(rws[key])
+  var x=0;
+    while(x<4){
+        resultadoTemp.splice(0,1);
+        x++;
+    }
+    //for(var i =0 ;i< resultadoTemp.length;i++){
+        if( resultadoTemp[op]==1){
+        arrA.push(key);
+        }
+        if( resultadoTemp[op]==2){
+        arrB.push(key);
+        }
+        if( resultadoTemp[op]==3){
+        arrC.push(key);
+        }
+        if( resultadoTemp[op]==4){
+        arrD.push(key);
+        }
+    //}
+
+}
+document.getElementById("totalA").value=arrA.length;
+document.getElementById("totalB").value=arrB.length;
+document.getElementById("totalC").value=arrC.length;
+document.getElementById("totalD").value=arrD.length;
+
+console.log("total de personas que dieron en a "+arrA.length);
+console.log("total de personas que dieron en b "+arrB.length);
+console.log("total de personas que dieron en c "+arrC.length);
+console.log("total de personas que dieron en d "+arrD.length);
+
+var totalp=((arrA.length)+(arrB.length)+(arrC.length)+(arrD.length));
+document.getElementById("total").value=totalp;
+console.log("total de personas "+totalp);
+
+
+
+
+/**    let aux=rws.filter(x=>x.idpadre===0);
+	console.log("respuesta de filtro "+JSON.stringify(aux));
+	aux.forEach(y=>{
+		 let temp =evalua(y);
+		console.log("informacion encontrada de opcion menu "+JSON.stringify(temp));
+	});*/
+   };
+
+iniciar();
+
+
+function leerArchivo(e) {
+  var archivo = e.target.files[0];
+  if (!archivo) {
+    return;
+  }
+  var lector = new FileReader();
+  lector.onload = function(e) {
+    var contenido = e.target.result;
+    rws=contenido;
+    mostrarContenido(contenido);
+  };
+  lector.readAsText(archivo);
+}
+
+function mostrarContenido(contenido) {
+  var elemento = document.getElementById('contenido-archivo');
+  elemento.innerHTML = contenido;
+}
+
+document.getElementById('file-input')
+  .addEventListener('change', leerArchivo, false);
+function revisa(){
+    var combo = document.getElementById("cars");
+var selected = combo.options[combo.selectedIndex].text;
+var pru=selected.substring(selected.indexOf(">")-2,selected.indexOf(">"));
+var intl=parseInt(pru);
+var str= intl-1;
+ arrA=[];
+ arrB=[];
+ arrC=[];
+ arrD=[];
+
+ var x = document.getElementById("inici");
+ x.style.display = "block";
+iniciar(str);
+}
+</script>
+</html>
